@@ -15,16 +15,16 @@ SubCategoryRouter.post("/",
         await SubCategoryController.createSubCategory(request,response)
 })
 
-SubCategoryRouter.get("/:subCategory_id", async (request:Request, response:Response) => {
-    await SubCategoryController.getAllSubCategory(request,response)
+SubCategoryRouter.get("/:subCategoryId", async (request:Request, response:Response) => {
+    await SubCategoryController.getSubCategory(request,response)
 })
 
-SubCategoryRouter.put("/:subCategory_id", async (request:Request , response:Response) => {
+SubCategoryRouter.put("/:subCategoryId", async (request:Request , response:Response) => {
     await SubCategoryController.updateSubCategory(request,response)
 })
 
-SubCategoryRouter.delete("/:subCategory_id", async (request:Request , response:Response) => {
-    await SubCategoryController.deleteSubCategory(request,response)
+SubCategoryRouter.put("/delete/:subCategoryId", async (request:Request , response:Response) => {
+    await SubCategoryController.updateSubCategoryStatus(request,response)
 })
 
 export default SubCategoryRouter

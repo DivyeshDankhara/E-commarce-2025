@@ -5,6 +5,7 @@ import { log } from "console";
 dotenv.config({ path: "./.env" });
 import CategoryRouter from "./routes/CategoryRouter"
 import SubCategoryRouter from "./routes/SubCategoryRouter";
+import ProductRouter from "./routes/ProductRouter";
 
 const port: string | number | undefined = process.env.PORT || 9900;
 const hostName: string = "127.0.0.1";
@@ -25,6 +26,7 @@ app.get("/", (request: Request, response: Response) => {
 app.use(express.json());
 app.use("/category",CategoryRouter);
 app.use("/subcategory",SubCategoryRouter);
+app.use("/product",ProductRouter);
 
 if (port) {
   app.listen(Number(port), () => {

@@ -15,11 +15,12 @@ export const getAllCategory = async (request:Request , response:Response) => {
 }
 
 export const createCategory = async (request:Request , response:Response) => {
-    let { category_name,category_description,category_logo} = request.body;
+    let { category_name,category_description,category_logo,isActive} = request.body;
     let theCategory: EcomCategory | null | undefined = await new CategoryTable({
         category_name: category_name,
         category_description: category_description,
-        category_logo: category_logo
+        category_logo: category_logo,
+        isActive: isActive
     }).save();
 
     if(theCategory) {
@@ -47,13 +48,14 @@ export const getCategory = async (request:Request, response:Response) => {
 
 export const updateCategory = async (request:Request , response:Response) => {
     let { categoryId } = request.params;
-    let { category_name, category_description, category_logo } = request.body;
+    let { category_name, category_description, category_logo, isActive } = request.body;
     let theCategory: EcomCategory | undefined | null = await CategoryTable.findByIdAndUpdate(
         categoryId,
         {
             category_name,
             category_description,
             category_logo,
+            isActive
         },
         {
             new: true
@@ -68,10 +70,16 @@ export const updateCategory = async (request:Request , response:Response) => {
     return response.status(200).json(theCategory);
 }
 
-export const deleteCategory = async (request:Request , response:Response) => {
+export const updateCategoryStatus = async (request:Request , response:Response) => {
     let { categoryId } = request.params;
-    let theCategory: EcomCategory | undefined | null = await CategoryTable.findByIdAndDelete(
+    let theCategory: EcomCategory | undefined | null = await CategoryTable.findByIdAndUpdate(
         categoryId,
+        {
+            isActive:false
+        },
+        {
+            new:true
+        }
     );
     if(!theCategory) {
         return response.status(500).json({

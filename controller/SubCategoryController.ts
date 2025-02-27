@@ -1,12 +1,11 @@
 import { Request , Response } from "express";
-import { EcomCategory } from "../models/EcomCategory";
 import mongoose from "mongoose";
 import SubCategoryTable from "../database/SubCategorySchema";
 import { EcomSubCategory } from "../models/EcomSubCategory";
 
 export const getAllSubCategory = async (request:Request , response:Response) => {
     try{
-        let subCategorys: EcomCategory[] | undefined = await SubCategoryTable.find();
+        let subCategorys: EcomSubCategory[] | undefined = await SubCategoryTable.find();
         if(subCategorys) {
             return response.status(200).json(subCategorys)
         }
@@ -16,12 +15,12 @@ export const getAllSubCategory = async (request:Request , response:Response) => 
 }
 
 export const createSubCategory = async (request:Request , response:Response) => {
-    let { category_id,name,description,logo,} = request.body;
+    let { category_id,sub_category_name,sub_category_description,sub_category_logo,} = request.body;
     let theSubCategory: EcomSubCategory | null | undefined = await new SubCategoryTable({
         category_id: category_id,
-        name: name,
-        description: description,
-        logo: logo,
+        sub_category_name: sub_category_name,
+        sub_category_description: sub_category_description,
+        sub_category_logo: sub_category_logo,
     }).save();
 
     if(theSubCategory) {
@@ -36,7 +35,7 @@ export const createSubCategory = async (request:Request , response:Response) => 
 export const getSubCategory = async (request:Request, response:Response) => {
     let { subCategoryId } = request.params;
     const mongoSubCategoryId = new mongoose.Types.ObjectId(subCategoryId);
-    let theSubCategory : EcomCategory | undefined | null = await SubCategoryTable.findById(
+    let theSubCategory : EcomSubCategory | undefined | null = await SubCategoryTable.findById(
         mongoSubCategoryId
     );
     if(!theSubCategory){
@@ -49,15 +48,15 @@ export const getSubCategory = async (request:Request, response:Response) => {
 }
 
 export const updateSubCategory = async (request:Request , response:Response) => {
-    let { subCategory_id } = request.params;
-    let { category_id,name,description,logo} = request.body;
+    let { subCategoryId } = request.params;
+    let { category_id,sub_category_name,sub_category_description,sub_category_logo} = request.body;
     let theSubCategory: EcomSubCategory | undefined | null = await SubCategoryTable.findByIdAndUpdate(
-        subCategory_id,
+        subCategoryId,
         {
             category_id,
-            name,
-            description,
-            logo
+            sub_category_name,
+            sub_category_description,
+            sub_category_logo
         },
         {
             new: true
@@ -72,15 +71,21 @@ export const updateSubCategory = async (request:Request , response:Response) => 
     return response.status(200).json(theSubCategory);
 }
 
-export const deleteSubCategory = async (request:Request , response:Response) => {
-    let { subCategory_id } = request.params;
-    let theSubCategory: EcomSubCategory | undefined | null = await SubCategoryTable.findByIdAndDelete(
-        subCategory_id,
+export const updateSubCategoryStatus = async (request:Request , response:Response) => {
+    let { subCategoryId } = request.params;
+    let theSubCategory: EcomSubCategory | undefined | null = await SubCategoryTable.findByIdAndUpdate(
+        subCategoryId,
+        {
+            isActive:false
+        },
+        {
+            new:true
+        }
     );
     if(!theSubCategory) {
         return response.status(500).json({
             data:null,
-            error: "No Category is found",
+            error: "No SubCategory is found",
         })
     }
     return response.status(200).json(theSubCategory);

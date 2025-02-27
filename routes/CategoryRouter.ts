@@ -17,15 +17,15 @@ CategoryRouter.post("/",
 )
 
 CategoryRouter.get("/:categoryId", async (request:Request, response:Response) => {
-    await CategoryController.getAllCategory(request,response)
+    await CategoryController.getCategory(request,response)
 })
 
 CategoryRouter.put("/:categoryId", async (request:Request , response:Response) => {
     await CategoryController.updateCategory(request,response)
 })
 
-CategoryRouter.delete("/:categoryId", async (request:Request , response:Response) => {
-    await CategoryController.deleteCategory(request,response)
+CategoryRouter.put("/delete/:categoryId", async (request:Request , response:Response) => {
+    await CategoryController.updateCategoryStatus(request,response)
 })
 
 export default CategoryRouter
